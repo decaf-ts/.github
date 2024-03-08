@@ -3,9 +3,9 @@
   "version": "0.0.1",
   "description": "Readme page for decaf-ts project",
   "scripts": {
-    "build:banner": "gs -dNOPAUSE -dBATCH -sDEVICE=png16m -r300 -sOutputFile=resources/banner.png assets/illustrator/banner.ai",
-    "build:cover": "gs -dNOPAUSE -dBATCH -sDEVICE=png16m -r300 -sOutputFile=resources/cover.png assets/illustrator/cover.ai",
-    "build:icon": "gs -dNOPAUSE -dBATCH -sDEVICE=png16m -r300 -sOutputFile=resources/icon.png assets/illustrator/icon.ai",
+    "build:banner": "gs -dNOPAUSE -dBATCH -sDEVICE=png16m -r300 -sOutputFile=profile/resources/banner.png assets/illustrator/banner.ai",
+    "build:cover": "gs -dNOPAUSE -dBATCH -sDEVICE=png16m -r300 -sOutputFile=profile/resources/cover.png assets/illustrator/cover.ai",
+    "build:icon": "gs -dNOPAUSE -dBATCH -sDEVICE=png16m -r300 -sOutputFile=profile/resources/icon.png assets/illustrator/icon.ai",
     "build": "npm run build:banner && npm run build:cover && npm run build:icon",
     "docs": "npm run build && npx markdown-include ./mdCompile.json"
   },
