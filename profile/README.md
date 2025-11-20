@@ -1,186 +1,183 @@
-[![Banner](./resources/banner.png)](thhps://github.com/decaf-ts)
+# Decaf-TS ☕️
 
-![Licence](https://img.shields.io/github/license/decaf-ts/decaf-ts.svg)
+![Banner](./resources/banner.png)
 
+Welcome to **Decaf-TS** – the TypeScript framework that’s as modular as your morning coffee order, and just as likely to keep you up at night (with excitement, not bugs). If you’ve ever wanted to build fullstack apps with a dash of humor and a shot of flexibility, you’re in the right place!
 
-# decaf-ts
-### Decaf's almost a Framework
+## What is Decaf-TS?
 
-##### Why we need a TS almost framework?
+Decaf-TS is a highly modular, TypeScript-first framework for building robust, scalable, and maintainable applications. Whether you’re brewing up a backend, a frontend, or a full-stack concoction, Decaf-TS lets you pick only the modules you need. No more gulping down monolithic frameworks!
 
-I know... like there aren't enough... Good this DECAF is not quite a Framework.
+## Why Decaf-TS?
+- **Modular**: Like a coffee shop menu, pick only what you need.
+- **TypeScript All The Way**: Strong types, strong coffee.
+- **Persistence Adapters**: CouchDB, PouchDB, TypeORM, and more – we support more databases than your local café has milk alternatives.
+- **UI Engines**: Angular, React, and more. Your UI, your way.
+- **Decorator Magic**: Decorators everywhere. Because who doesn’t love a little syntactic sugar?
 
-No. Really,
+## Packages & Main Functionalities
 
-Often when developing distinct Typescript based R&D projects, I often struggled (or kept reinventing the wheel) to find standard ORM features other languages already offer. Be it because
-- For some specific reason fell off the usual tech stacks:
-  - unusual storage systems (eg: Blockchain);
-  - strict lightweight requirements (near vanilla JS developments);
-  - lack of consistent model validation for node;
-  - non-relational storage;
-- Or in more classical projects:
-  - Insufficient/complex model control (validation, serialization, hashing, equality) that other languages typically support;
-  - Consistent ORM behaviour in the frontend and backend;
-  - Consistent Validation behaviour;
-  - Boiler plate code in services/repositories;
-- Or even when just considering the UI:
-  - Boiler plate code in views for CRUD and listing;
-  - Boiler plate code in controllers/services;
-  - Lack of code portability;
-  - Hi dependency-volume (hi bundle sizes);
+### ☕️ Core Modules
+- **@decaf-ts/decorator-validation**: Validate your models and your life choices.
+  - *Use case*: Add validation rules to your models with decorators.
+  - *Example*:
+    ```ts
+    @model()
+    class User {
+	  @required()
+      name!: string;
+    
+      @email()
+      email: string;
+    }
+    ```
+- **@decaf-ts/db-decorators**: Decorators for database models. Because plain classes are so last season.
+  - *Use case*: Define database schemas and relationships with decorators.
+  - *Example*:
+    ```ts
+    @model()
+    class Product {
+      @id()
+      id: string;
+      
+      @timestamp()
+      updatedAt: Date;
+    
+      @onUpdated(onUpdateHandler, {})
+      onUpdateField: string;
+    }
+    ```
+- **@decaf-ts/core**: The heart of Decaf-TS. Repository patterns, query engines, and more.
+  - *Use case*: Abstract data access and business logic.
+  - *Example*:
+    ```ts
+    @table("product")
+    @model()
+    class Product {
+      @gtin()
+      @pk({type: "serial", generated: false})
+      id: string;
+      
+      @column("created_at")
+      @createdAt()
+      createdAt: Date;
+    
+      @updatedAt()
+      updatedAt: Date;
+    
+      @createdBy()
+      createdBy: string;
+    
+      @updatedBy()
+      updatedcy: string;
+    
+      @version()
+      version: number;
+    }
+    
+    const repo = Repository.forModel(Product);
+    const created = await repo.create(new Product());
+    
+    const products = await repo.select().execute();
+    ```
+- **@decaf-ts/injectable-decorators**: Dependency injection, but make it TypeScript.
+  - *Use case*: Inject services and repositories into your classes.
+  - *Example*:
+    ```ts
+    @injectable()
+    class UserService { ... }
+    
+    
+    class Other {
+      @inject()
+      private userService!: UserService;
+    
+    }
+    ```
+- **@decaf-ts/transactional-decorators**: Transaction management. Because sometimes you need to roll back your mistakes.
+  - *Use case*: Mark methods as transactional.
+  - *Example*:
+    ```ts
+    @transactional()
+    async updateUser(user: User) { ... }
+    ```
 
-Over time I started standardizing the functionality I really required (and that for the nature of the projects and some of the reasons above,
-standard WebFrameworks were not desirable) into very small, lightweight modules that can be combined according to the feature required for each project
+### 🗄️ Persistence Adapters
+- **@decaf-ts/for-couchdb**: CouchDB adapter. For when you want your data to lounge comfortably.
+  - *Use case*: Integrate CouchDB with your repositories.
+- **@decaf-ts/for-pouch**: PouchDB adapter. For digital wallets and offline dreams.
+  - *Use case*: Use PouchDB for local-first apps.
+  - *Example*:
+    ```ts
+    const pouchRepo = new PouchRepository<User>(User);
+    ```
+- **@decaf-ts/for-nano**: Nano adapter for CouchDB. Small, but mighty.
+  - *Use case*: Use nano for lightweight CouchDB access.
+- **@decaf-ts/for-typeorm**: TypeORM adapter. For the relationally inclined.
+  - *Use case*: Use TypeORM with Decaf-TS repositories.
+- **@decaf-ts/for-fabric**: Hyperledger Fabric adapter. Blockchain, but without the stress.
+  - *Use case*: Integrate with Hyperledger Fabric for enterprise blockchain needs.
 
-***Under development***
+### 🎨 UI Engines
+- **@decaf-ts/for-angular**: Angular UI engine. Turns your models into functional CRUD screens faster than you can say "ng serve".
+  - *Use case*: Auto-generate Angular CRUD UIs from your models.
+- **@decaf-ts/for-react**: React UI engine. Because hooks are the new black.
+  - *Use case*: Build React UIs with model-driven forms and lists.
+- **@decaf-ts/for-react-native**: React UI engine. Because hooks are the new black.
+  - *Use case*: Build React UIs with model-driven forms and lists.
+- **@decaf-ts/for-nextjs**: React UI engine. Because hooks are the new black.
+  - *Use case*: Build React UIs with model-driven forms and lists.
+- **@decaf-ts/ui-decorators**: UI decorators for all your rendering needs.
+  - *Use case*: Annotate your models for UI rendering hints.
 
-Wait for it...
-Typescript library suite meant to fill the void of cross-platform, stable Typescript ORM frameworks 
+### 🛠️ Utilities & More
+- **@decaf-ts/utils**: Utility functions. The duct tape of Decaf-TS.
+  - *Use case*: Common helpers for all Decaf-TS modules.
+- **@decaf-ts/logging**: Logging utilities. Because you need to know what went wrong (and right).
+  - *Use case*: Structured logging for your app.
+- **@decaf-ts/mcp-server**: Microservices, prompts, and more. For when you want to go big, but stay decaf.
+  - *Use case*: Build microservices and prompt-driven workflows.
+- **@decaf-ts/as-zod**: Zod integration. For schema validation that’s actually fun.
+  - *Use case*: Use Zod schemas with Decaf-TS models.
+- **@decaf-ts/decoration**: Advanced decoration utilities. Because your code deserves to look good.
+  - *Use case*: Custom decorators and metadata utilities.
 
-### Modules
+## Common Usage Example
 
-#### [@decaf-ts/decorator-validation](https://github.com/decaf-ts/decorator-validation)
+```ts
+import { Repository } from '@decaf-ts/core';
+import { Entity, PrimaryKey } from '@decaf-ts/db-decorators';
+import { IsEmail } from '@decaf-ts/decorator-validation';
 
-Standalone module, defines the base Model class:
-- decorator based validation api with recursive validation;
-- hashing via configurable method;
-- customizable serialization/deserialization to instantiation;
-- Customizable Model building factories enabling nested instantiation;
-- model equality;
-- Easily extended custom validation;
-- Java like date handling (format and serialization);
-- Configurable error messages;
+@model()
+class User {
+  @pk()
+  id: string;
 
-#### [@decaf-ts/db-decorators](https://github.com/decaf-ts/db-decorators)
+  @email()
+  email: string;
+}
 
-Extension of `decorator-validation`, defines the base DBModel class:
-- update capable decorator based validation api with recursive validation;
-- implements configurable decorated based hooks for all CRUD operations:
-  - on<operation>: hook will be called before the `operation`;
-  - after<operation>: hook will be called after the `operation`;
-- Defines the abstract `Repository` class that calls the respective hooks for each CRUD operation:
-  - Developers are responsible for implementing the actual CRUD methods for their storage systems;
-
-#### [@decaf-ts/injectable-decorators](https://github.com/decaf-ts/injectable-decorators)
-
-Standalone module, exposes a simple implementation for Dependency injection:
-- Injectables are singletons;
-- they are injected by overriding a class's attribute `getter` and are only requested when actually needed, simplifying the injection order;
-- Developer is responsible for originally instantiating them;
-
-#### [@decaf-ts/transactional-decorators](https://github.com/decaf-ts/transactional-decorators)
-
-Standalone module, exposes a simple implementation to handle concurrency:
-- decorate methods as `@transactional()` for control;
-- decorate classes as `@Transactional()`, enabling Instance proxying and keeping transactions across different classes/method calls (grouping several calls in a sing transaction)l
-- Customizable Transaction Lock;
-- Seamless integration with `db-decorators`;
-
-#### [@decaf-ts/ui-decorators](https://github.com/decaf-ts/ui-decorators)
-
-Extension of `db-decorators`, exposes a simple implementation to handle automatic model rendering:
-- decorate classes and attributes as UI elements or UI element properties;
-- provides the base objects to implement `ui-adapters` specific to each tech (Ionic, Angular, React, HTML5, etc);
-  - automatic CRUD view rendering;
-  - automatic UI validation according to `decorator-validation`'s decorators;
-  - enables automatic custom validation (not HTML standard);
-
-#### [@decaf-ts/ionic-ui-adapter](https://github.com/decaf-ts/ionic-ui-adapter)
-
-Ionic adapter for `ui-decorators` (JSX);
-
-#### [@decaf-ts/angular-ui-adapter](https://github.com/decaf-ts/angular-ui-adapter)
-
-Angular adapter for `ui-decorators` (JSX);
-
-#### [@decaf-ts/react-ui-adapter](https://github.com/decaf-ts/react-ui-adapter)
-
-React adapter for `ui-decorators` (JSX);
-
-#### [@decaf-ts/storage-wrapper](https://github.com/decaf-ts/storage-wrapper)
-
-More opinionated (but very convenient) extension of `db-decorators`, and exposes all the functionality from the previous modules in a very extensible and developer friendly way:
-- wraps any storage (blockchain, relational/non-relational databases and any other storage mechanism);
-- automates the boiled plate code from `decorator-validation`, `db-decorators` and `injectable-decorators`;
-- provides raw access to the storage;
-- provides querying capabilities;
-- Provides Repository apis for all selector Models;
-- Initializes the storage according to the selected Models;
-
-#### [@decaf-ts/sql-syntax](https://github.com/sql-syntax)
-
-A very opinionated (but very convenient for certain cases, eg non relational dbs) extension of `storage-wrapper`, that wraps the native statement syntax
-for each specific storage type in an easily recognizable SQL-like syntax in a functional approach:
-- Extensible for all Database like storages;
-
-#### [@decaf-ts/couchdb-wrapper](https://github.com/decaf-ts/couchdb-wrapper)
-
-Extension of `storage-wrapper` and `sql-syntax` wrapper for couchdb compatible objects (couchDb, pouchdb, etc);
-
-#### [@decaf-ts/hl-fabric-wrapper](https://github.com/decaf-ts/hl-fabric-wrapper)
-
-Extension of `storage-wrapper` and `sql-syntax` wrapper to be used in Hyperledger Fabric SmartContracts:
-  - Standard CRUD SmartContract for Maintaining state in the Ledger;
-  - Standard ERC-20 SmartContract for maintaining token/currency;
-
-### DECAF Lite
-
-- @decaf-ts/decorator-validation;
-- @decaf-ts/db-decorators;
-
-### Backend DECAF suite
-
-  - @decaf-ts/decorator-validation;
-  - @decaf-ts/db-decorators;
-  - @decaf-ts/injectable-decorators;
-  - @decaf-ts/transactional-decorators; (optional)
-  - @decaf-ts/storage-wrapper;
-  - @decaf-ts/sql-syntax; (optional)
-  - @decaf-ts/<storage>-wrapper; Suited for your storage (or many)
-
-### Fullstack DECAF suite
-
-  - @decaf-ts/decorator-validation;
-  - @decaf-ts/db-decorators;
-  - @decaf-ts/injectable-decorators;
-  - @decaf-ts/transactional-decorators; (optional)
-  - @decaf-ts/storage-wrapper;
-  - @decaf-ts/sql-syntax; (optional)
-  - @decaf-ts/<storage>-wrapper; Suited for your storage (or many)
-  - @decaf-ts/ui-decorators;
-  - @decaf-ts/<adapter>-ui-adapter; Suited for your frontend Framework (or several);
-
-### Considerations
-
-#### Typescript Compilation options
-
-Even though all code is exported in both CommonJS and ESM format, and the default is ES2022
-in order to take advantage to all the latest Typescript and JS features,
-when importing  these libraries the following flag in `tsconfig.compilerOptions` is mandatory:
-```json
-  ...
-  "experimentalDecorators": true,
-  "emitDecoratorMetadata": true,
-  "useDefineForClassFields": false
-  ...
+const repo = Repository.forModel(User);
+const created = await repo.create(new User());
 ```
 
-When using the `storage-wrapper` module, the following flag is also required:
-```json
-  ...
-  "esModuleInterop": true,
-  ...
-```
+## Documentation & Website
+- [Documentation](https://decaf-ts.github.io/decaf-ts)
+- [Website](https://decaf-ts.github.io)
 
+## Getting Started
+1. Pick your modules.
+2. Install with npm or yarn.
+3. Add some decorators.
+4. Profit (or at least, build something cool).
 
-
-
-### Related Projects
-
-- [Pharmaledger](https://pharmaledger.h2020.eu): R&D project where the [OpenDSU Framework](www.opendsu.com) was used as a middleware to store data on the Quorum/Hyperledger Fabric blockchain. Initial concept and approach developed over the course of this project;
-- [Glass](https://glass.h2020.eu): R&D project where the initial version of this suite was developed and implemented to store Self Sovereign Data on the Hyperledger Fabric Blockchain and render data via in an Ionic environment;
-- [Aeon](https://glass.h2020.eu): R&D project the beta version of this suite was implemented in full (Angular, couchdb, pouchdb, Hyperledger Fabric and nestJS integration);
+## Logo & Banner
+![Logo](./resources/icon.png)
 
 ### Social
 
 [![LinkedIn](https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white)](https://pt.linkedin.com/in/tiagovenceslau)
+---
+
+> Decaf-TS: For developers who want all the flavor, none of the jitters.
